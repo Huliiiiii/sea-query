@@ -990,7 +990,7 @@ impl SelectStatement {
         R: IntoTableRef,
         A: IntoIden,
     {
-        self.from_from(tbl_ref.into_table_ref().alias(alias.into_iden()))
+        self.from_from(tbl_ref.into_table_ref().alias(alias))
     }
 
     /// From sub-query.
@@ -1537,7 +1537,7 @@ impl SelectStatement {
     {
         self.join_join(
             join,
-            tbl_ref.into_table_ref().alias(alias.into_iden()),
+            tbl_ref.into_table_ref().alias(alias),
             JoinOn::Condition(Box::new(ConditionHolder::new_with_condition(
                 condition.into_condition(),
             ))),

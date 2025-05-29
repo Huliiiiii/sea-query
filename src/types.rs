@@ -104,10 +104,10 @@ impl From<&'static str> for IdenImpl {
     }
 }
 
-pub type DynIden = IdenImpl;
+pub type DynIden = SeaRc<IdenImpl>;
 type DynIdenOld = SeaRc<dyn Iden>;
 
-#[derive(Debug)]
+#[derive(Debug, PartialEq)]
 #[repr(transparent)]
 pub struct SeaRc<I>(pub(crate) RcOrArc<I>)
 where
@@ -179,7 +179,22 @@ where
     T: Into<IdenImpl>,
 {
     fn into_iden(self) -> DynIden {
-        self.into()
+        SeaRc::new(self.into())
+    }
+}
+
+impl IntoIden for DynIden {
+    fn into_iden(self) -> DynIden {
+        self
+    }
+}
+
+impl<T> From<T> for DynIden
+where
+    T: Into<IdenImpl>,
+{
+    fn from(value: T) -> Self {
+        SeaRc::new(value.into())
     }
 }
 
