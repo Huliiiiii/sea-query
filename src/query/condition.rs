@@ -1,4 +1,4 @@
-use crate::{expr::SimpleExpr, types::LogicalChainOper};
+use crate::{ExprTrait, expr::SimpleExpr, types::LogicalChainOper};
 
 #[derive(Debug, Clone, PartialEq, Eq)]
 pub enum ConditionType {
@@ -287,11 +287,7 @@ impl From<Condition> for SimpleExpr {
                 ConditionType::All => true.into(),
             })
         };
-        if cond.negate {
-            expr.not()
-        } else {
-            expr
-        }
+        if cond.negate { expr.not() } else { expr }
     }
 }
 
