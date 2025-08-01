@@ -45,6 +45,19 @@ jobs:
       - run: cargo fmt --manifest-path examples/sqlx_postgres/Cargo.toml --all -- --check
       - run: cargo fmt --manifest-path examples/postgres/Cargo.toml --all -- --check
       - run: cargo fmt --manifest-path examples/sqlx_mysql/Cargo.toml --all -- --check
+      
+  check:
+    name: Cargo check
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: dtolnay/rust-toolchain@master
+        with:
+          toolchain: stable
+      - run: cargo check --features=all-features --workspace
+      - run: cargo check --manifest-path sea-query-binder/Cargo.toml --workspace --features runtime-async-std-rustls --features=with-chrono,with-json,with-rust_decimal,with-bigdecimal,with-uuid,with-time,with-ipnetwork,with-mac_address,postgres-array,postgres-vector
+      - run: cargo check --manifest-path sea-query-rusqlite/Cargo.toml --all-features --workspace
+      - run: cargo check --manifest-path sea-query-postgres/Cargo.toml --all-features --workspace
 
   clippy:
     name: Clippy
